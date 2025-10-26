@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_transfer_requester_tree" model="ir.ui.view">
+        <field name="name">transfer.request.form</field>
+        <field name="model">transfer.request</field>
+        <field name="arch" type="xml">
+            <form string="Transfer">
+
+                <header>
+                    <button name="action_request"
+                            invisible="state!='draft'"
+                            string="Request" type="object" class="oe_highlight"/>
+
+                    <button name="action_confirm"
+                            invisible="state != 'waiting'"
+                            string="Confirm" type="object" class="oe_highlight"/>
+
+                    <button name="action_receive"
+                            invisible="state!='approved'"
+                            string="Receive" type="object" class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            domain="[('state', 'in', ['cancel', 'done'])]"/>
+                    <button name="action_print"
+                            invisible="state == 'draft'"
+                            string="Print" type="object"/>
+                    <field name="state" widget="statusbar" nolabel="1"/>
+                </header>
+
+                <sheet>
+
+                    <!-- to be used -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"
+                                   invisible="name=='/'"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="picking_type_id"/>
+                            <field name="location_id" options="{'no_create': True}"/>
+                            <field name="location_dest_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <label for="scheduled_date"/>
+                            <div class="o_row">
+                                <field name="scheduled_date"/>
+                            </div>
+                            <field name="date" string="Effective Date"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Items" name="items">
+                            <field name="item_ids" mode="tree,kanban"
+                                   context="{'default_date': scheduled_date, 'default_picking_type_id': picking_type_id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id}">
+                                <tree string="Transfer Items" editable="bottom"
+                                      decoration-danger="available_in_store==False">
+                                    <field name="available_in_store"/>
+                                    <field name="number"/>
+                                    <field name="product_id" required="1" context="{'default_type': 'product'}"/>
+                                    <field name="products_availability" string="Available Amount In source"/>
+                                    <field name="demand"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <group>
+                                <field name="user_id"/>
+                                <field name="approved_id"/>
+                                <field name="received_id"/>
+                                <field name="canceled_id" domain="[('state', 'not in', ['cancel'])]"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <!-- ✅ Added chatter block -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_transfer_requester" model="ir.actions.act_window">
+        <field name="name">Internal Transfer</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">transfer.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Your Transfer Request Here!
+            </p>
+        </field>
+    </record>
+
+    <data>
+        <record id="view_res_users_inherit" model="ir.ui.view">
+            <field name="name">res.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="x_studio_locations" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+    <menuitem action="action_transfer_requester"
+              name="Internal Transfer"
+              id="transfer_request_menu"
+              parent="stock.menu_stock_warehouse_mgmt"
+              sequence="5"/>
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit project.project form view to add allowed products -->
+    <record id="view_project_project_form_inherit_transfer" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.transfer</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <!-- Add smart button for transfer requests -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_transfer_requests" icon="fa-truck">
+                    <field string="Transfer Requests" name="transfer_request_count" widget="statinfo"/>
+                </button>
+            </xpath>
+
+            <!-- Add new tab for allowed products -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Allowed Products" name="allowed_products">
+                    <field name="allowed_product_ids">
+                        <tree string="Products" create="true" delete="true" editable="top">
+                            <field name="default_code" readonly="1"/>
+                            <button name="open_product_form" string="" type="object" icon="fa-external-link" title="Open Product"/>
+                            <field name="display_name" string="Product" readonly="1"/>
+                            <field name="categ_id" readonly="1"/>
+                            <field name="uom_id" groups="uom.group_uom" readonly="1"/>
+                            <field name="type" readonly="1"/>
+                            <field name="list_price" readonly="1"/>
+                            <field name="qty_available" string="On Hand" readonly="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

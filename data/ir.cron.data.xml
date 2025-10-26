@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo noupdate="1">
+
+    <record id="ir_cron_bring_stock_picking_activity" model="ir.cron">
+        <field name="name">Stock Picking Auto</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.create_store_picking_new()</field>
+        <field name="interval_number">4</field>
+        <field name="active" eval="False" />
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+     <record id="ir_cron_bring_purchase_bills_activity" model="ir.cron">
+        <field name="name">Bills Auto</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.create_bills_new()</field>
+        <field name="active" eval="False" />
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+     <record id="ir_cron_change_purchase_state" model="ir.cron">
+        <field name="name">Purchase State</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.confirm_purchase_orders()</field>
+        <field name="active" eval="False" />
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+     <record id="ir_cron_validate_all_stock_picking" model="ir.cron">
+        <field name="name">Stock Picking Validate</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.confirm_stock_pickings_auto()</field>
+        <field name="active" eval="False" />
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+     <record id="ir_cron_connect_purchase_with_picking" model="ir.cron">
+        <field name="name">Stock Picking Connect</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.connect_purchase_order_with_picking()</field>
+        <field name="active" eval="False" />
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+     <record id="ir_cron_create_one_transfer_instead" model="ir.cron">
+        <field name="name">Stock Picking Create Single transfer</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.create_combined_store_picking_new()</field>
+        <field name="active" eval="False" />
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+    <record id="ir_cron_create_sales_order_new" model="ir.cron">
+        <field name="name">Create Sales Order New</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.create_sales_order_new()</field>
+        <field name="active" eval="False" />
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+      <record id="ir_cron_create_mrp_new" model="ir.cron">
+        <field name="name">Create MRP New</field>
+        <field name="model_id" ref="model_stock_picking"/>
+        <field name="state">code</field>
+        <field name="code">model.create_mrp_new()</field>
+        <field name="active" eval="False" />
+        <field name="interval_number">4</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+</odoo>
